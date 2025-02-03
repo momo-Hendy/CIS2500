@@ -85,6 +85,12 @@ int readCSV(char fname[30], struct Animal testData[NUM_TEST_DATA]) {
         }
 
         fscanf(fptr, "%d", &testData[i].classLabel);
+
+        printf("Test Sample %d: %s, Features: ", i + 1, testData[i].animalName);
+        for (int j = 0; j < NUM_FEATURES; j++) {
+            printf("%d ", testData[i].features[j]);
+        }
+        printf(", Class: %d\n", testData[i].classLabel);
     }
 
     fclose(fptr);
@@ -209,15 +215,15 @@ int predictClass (struct Animal dataZoo [NUM_SAMPLES], int newSample [NUM_FEATUR
 
 float findAccuracy (struct Animal dataZoo [NUM_SAMPLES], int whichDistanceFunction, struct Animal testData [NUM_TEST_DATA], int k) {
     int rightPreds = 0;
-    float accuracy = 0;
-
+    
     for (int i = 0; i < NUM_TEST_DATA; i++) {
         int predictedClass = predictClass(dataZoo, testData[i].features, whichDistanceFunction, k);
+        printf("Test Sample %d: Predicted Class = %d, Actual Class = %d\n", i + 1, predictedClass, testData[i].classLabel);
         if (predictedClass == testData[i].classLabel) {
             rightPreds++;
         }
     }
 
-    accuracy = ((float)rightPreds / NUM_TEST_DATA) * 100.0;
+    float accuracy = ((float)rightPreds / NUM_TEST_DATA) * 100.0;
     return accuracy;
 }

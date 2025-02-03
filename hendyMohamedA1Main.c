@@ -3,7 +3,9 @@
 
 int main (int argc, char * argv[]) {
 
-    int choice = 0;     
+    int choice = 0;
+    int fileLoaded = 0;
+    struct Animal dataZoo [NUM_SAMPLES];     
     
     do {
         printf("Here is the menu - enter a number between 1 and 5: \n");
@@ -20,9 +22,7 @@ int main (int argc, char * argv[]) {
             case 1:
                 char filename[30];
                 strcpy(filename, argv[1]);
-                struct Animal dataZoo [NUM_SAMPLES];
                 int readFile = readFromFile(filename, dataZoo);
-                int fileLoaded = 0;
 
                 if (readFile == -1) {
                     printf("File not read properly \n");
@@ -52,6 +52,10 @@ int main (int argc, char * argv[]) {
                 printf("Jaccard Similarity: %f\n", jaccardSimilarity);
                 break;
             case 3:
+                if (!fileLoaded) {
+                    printf("File not read yet. Please read file from beginning\n");
+                    break;
+                }
                 int newSample [NUM_FEATURES] = {1,1,1,0,1,0,1,1,1,0,0,0,0,1,1,1}; 
                 int k = 5;
                 int whichDistanceFunc [3] = {1, 2, 3};
@@ -87,15 +91,21 @@ int main (int argc, char * argv[]) {
                 }
                 break;
             case 5:
+                //printf("here\n");
                 if (!fileLoaded) {
                     printf("File not read yet. Please read file from beginning\n");
                     break;
                 }
+               // printf("Here 2\n");
                 float accuracy = 0;
                 char fname [30];
+                //printf("here 3\n");
                 strcpy(fname, argv[2]);
                 struct Animal testData[NUM_TEST_DATA];
-                int readCSVfile= readCSV(fname, testData);
+                //printf("here 4\n");
+                int readCSVfile = 0;
+	
+                readCSVfile = readCSV(fname, testData);
                 
                 if (readCSVfile == -1) {
                     printf("file not read properly, please try again.");
